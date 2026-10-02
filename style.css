@@ -16,3 +16,5 @@
 
 .wheel-actions{display:grid;gap:8px;margin-top:18px}.lab-controls .wheel-actions .button{margin:0;width:100%}#wheel-progress{display:block;margin-bottom:12px}
 @media(max-width:900px){.lab-layout{grid-template-columns:minmax(0,1fr)}}
+
+.qa-remember{display:flex;align-items:center;gap:8px;margin:10px 0;font-size:.85rem}.qa-dialog #qa-remember{width:18px;height:18px;margin:0}.qa-dialog #qa-forget{display:block;margin:8px 0}

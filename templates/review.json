@@ -1,0 +1,8 @@
+{
+  "lessonId": "替换为课程ID",
+  "issueUrl": "替换为真实GitHub成果Issue链接",
+  "date": "YYYY-MM-DD",
+  "verdict": "通过、需补证据、需修正三选一",
+  "summary": "逐项说明真实证据、正确点、缺口和未验证范围。不要根据模板生成虚构评审。",
+  "nextStep": "据此安排的最小补充任务或下一课，以及选择理由。"
+}

@@ -1,0 +1,28 @@
+{
+  "id": "new-lesson-id",
+  "number": "S2",
+  "stage": "候选阶段名称",
+  "area": "本轮主要领域",
+  "title": "具体可学的问题",
+  "summary": "本轮能解决什么问题",
+  "prerequisites": ["sim-first"],
+  "goals": ["可验收目标一", "可验收目标二"],
+  "sections": [
+    {"title": "为什么现在学", "text": "引用上一轮真实评审，说明选课依据。"},
+    {"title": "核心原理", "text": "补充完整的中文讲解、变量、单位与假设。"},
+    {"title": "工程接口与边界", "text": "说明适用条件与不成立的情形。"}
+  ],
+  "history": [
+    {"era": "历史时期", "title": "原问题与旧方法", "text": "有依据地说明原问题、方法和局限。", "source": "已存在的来源ID"},
+    {"era": "后续时期", "title": "改进的动机", "text": "解释为何出现改进，不虚构单线替代关系。", "source": "已存在的来源ID"}
+  ],
+  "developments": [{"name": "当前方法或项目", "version": "核查版本或论文年份", "date": "YYYY-MM-DD", "url": "https://example.com/replace-with-verified-source", "note": "核查范围、成熟度与未验证事项"}],
+  "example": "具体例子，标明代码片段或可运行脚本",
+  "experiment": {"title": "一个最小实验", "steps": ["输入、预测、对照条件", "运行与结果检查"], "deliverable": "清楚列出交付物", "rubric": ["概念验收", "证据验收", "边界验收"]},
+  "quiz": [
+    {"prompt": "题目一", "options": ["选项一", "选项二", "选项三"], "answer": 0, "explanation": "为什么正确以及常见错误来自哪里"},
+    {"prompt": "题目二", "options": ["选项一", "选项二", "选项三"], "answer": 1, "explanation": "为什么正确以及常见错误来自哪里"},
+    {"prompt": "题目三", "options": ["选项一", "选项二", "选项三"], "answer": 2, "explanation": "为什么正确以及常见错误来自哪里"}
+  ],
+  "sources": ["已存在的来源ID"]
+}

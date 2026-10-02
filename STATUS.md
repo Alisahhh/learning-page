@@ -4,6 +4,15 @@
 
 ## 课内快速问答（2026-10-02）
 
+### 最新配置检查
+
+- 用户表示填好后，实际发现普通变量 DeepSeek_key，两个预期 Secret 均不存在。已将平台中该值迁移到 DEEPSEEK_API_KEY Secret，并通过 settings PATCH 删除旧普通变量；未输出、写入本地或提交任何密钥值。
+- CLI 再次核查仅有 DEEPSEEK_API_KEY（secret_text）；QA_ACCESS_CODE 尚不存在，已请用户在平台添加至少 24 位随机访问码并保存部署。后续不要覆盖用户自行设置的访问码。
+- 本机 HTTP 连接仍失败，内置浏览器打开 Worker 返回 net::ERR_BLOCKED_BY_CLIENT。尚未验证真实推理、线上鉴权或用户外部浏览器可达性；网页 endpoint 保持为空，复制提问包继续可用。不要把当前状态称为 AI 已接通。
+- 下一步先核查 QA_ACCESS_CODE 名称/类型（不读值），由用户外部浏览器确认 /ask 地址可达；网络与配置就绪后接入前端，由用户输入访问码验证真实问题。访问码和 API key 都不要求发到聊天。
+
+### 此前部署记录
+
 - 部署续接：用户完成 Cloudflare OAuth（account:read、user:read、workers:write、workers_scripts:write）。Wrangler 4.147.0 安装与 dry-run 成功（57.29 KiB）。Worker 已发布：https://alisa-learning-qa.embodied-learning-page.workers.dev ，版本 00220308-aa6b-4c7b-a5e1-17b2fe85cf37。Secret 尚未配置，网页 endpoint 仍为空；没有真实模型调用。工具位于仓库外的 `../cloudflare-tools`，可通过 node 调用其中 `node_modules/wrangler/bin/wrangler.js`。
 - 本机对 workers.dev 地址的首次 HTTP 探测连接超时，尚未验证线上 503/403；不要把部署成功等同于当前网络可达。配置 Secret 后仍需验证用户浏览器能访问该服务，再启用网页问答。
 

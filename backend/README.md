@@ -1,6 +1,6 @@
 # 课内答疑后端（Cloudflare Workers）
 
-状态（2026-10-02）：Wrangler 4.147.0 已打包并发布至 https://alisa-learning-qa.embodied-learning-page.workers.dev 。Secret 尚未配置、真实模型调用尚未验证，网页 endpoint 仍为空。GitHub Pages 只发布前端，不部署本目录。
+状态（2026-10-02）：Wrangler 4.147.0 已打包并发布至 https://alisa-learning-qa.embodied-learning-page.workers.dev 。DEEPSEEK_API_KEY Secret 已配置，QA_ACCESS_CODE 待用户补填。本机访问超时，内置浏览器报告 ERR_BLOCKED_BY_CLIENT；真实模型调用尚未验证，网页 endpoint 仍为空。GitHub Pages 只发布前端，不部署本目录。
 
 ## 用户只需提供的设置
 

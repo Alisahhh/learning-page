@@ -7,7 +7,7 @@ import {differentialDrive} from './simulation.js';
 
 const $ = selector => document.querySelector(selector);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let state = emptyState(), storageOK = true, toastTimer, wheelAnimation=0;
+let state = emptyState(), storageOK = true, toastTimer, wheelAnimation=0, wheelRunning=false;
 try { const raw = localStorage.getItem(STORAGE_KEY); if(raw) state=validateState(JSON.parse(raw)); }
 catch { storageOK=false; }
 const record = id => state.lessons[id] ?? emptyRecord();
@@ -117,7 +117,7 @@ function bind(l) {
   }
 }
 function render() {
-  cancelAnimationFrame(wheelAnimation);
+  cancelAnimationFrame(wheelAnimation);wheelAnimation=0;wheelRunning=false;wheelResult=null;
   const route=location.hash.slice(1).split('?')[0]||'home',parts=route.split('/'),l=parts[0]==='lesson'?byId(parts[1]):null;
   const pages={home:['学习地图',home],resources:['资料与论文',resourcesPage],notebook:['学习档案',notebook],lab:['轮式仿真实验台',wheelLab],'delay-lab':['延迟响应实验',lab]};
   let title,html;
@@ -136,18 +136,31 @@ function submissionPanel(l){
 }
 let wheelResult;
 function wheelLab(){
-  return `<div class="page-heading"><div><p class="eyebrow">ROUND 01 · SIMULATION FIRST</p><h1>先让机器人动起来。</h1><p class="subtitle">先预测，再改参数。用三条轨迹理解差速底盘的运动。</p></div></div><div class="notice"><b>理想运动学仿真。</b> 这里没有摩擦、质量或接触求解。第一轮先学会解释运动，再用 MuJoCo 比较物理模型。</div><div class="lab-layout"><section class="lab-controls"><span class="section-kicker">小车参数</span><h2>两只轮子，一条轨迹</h2><p>轮半径 0.1 m · 轮距 0.5 m<br>从原点出发，朝向世界坐标 +x</p><label for="wheel-left">左轮速度 <output id="left-value">2 rad/s</output></label><input type="range" id="wheel-left" min="-6" max="6" step="0.1" value="2"><label for="wheel-right">右轮速度 <output id="right-value">2 rad/s</output></label><input type="range" id="wheel-right" min="-6" max="6" step="0.1" value="2"><label for="wheel-dt">积分步长</label><select id="wheel-dt"><option value="0.02">0.02 秒 · 较细</option><option value="0.1">0.1 秒</option><option value="0.5">0.5 秒 · 较粗</option></select><div class="preset-row"><button data-preset="2,2">直行</button><button data-preset="2,4">转弯</button><button data-preset="-2,2">原地旋转</button></div><button class="button" id="run-wheels">运行 6 秒仿真</button><p class="muted">蓝线：欧拉积分轨迹<br>虚线：相同输入的解析轨迹<br>白色短线：小车前方</p><a class="text-link" href="#lesson/${labTargetId()}">阅读对应课程</a></section><section class="lab-results"><div class="section-heading"><h2>小车的世界坐标</h2><span id="wheel-time">t = 0.00 s</span></div><svg id="wheel-chart" viewBox="0 0 760 430" role="img" aria-labelledby="wheel-title wheel-desc"></svg><div class="lab-metrics" id="wheel-metrics" aria-live="polite"></div><p id="wheel-explanation"></p><p class="muted">结果保存到：${esc(byId(labTargetId()).title)}</p><button class="button secondary" id="save-wheel">将本次实验记入报告</button></section></div><section class="reference-note"><h2>本轮要解释的三个现象</h2><ol><li>为什么两轮同速时走直线，反向同速时原地旋转？</li><li>保持轮速不变，增大步长后与解析轨迹的误差为什么改变？</li><li>这个模型里没有质量和摩擦，你能用它验证小车打滑吗？</li></ol><p>积分公式：x[k+1]=x[k]+v·cosθ[k]·Δt；y[k+1]=y[k]+v·sinθ[k]·Δt；θ[k+1]=θ[k]+ω·Δt。速度命令被立即执行；不模拟执行器响应、接触、打滑与噪声。</p><div class="button-row"><a class="button" href="#lesson/${labTargetId()}">填写解释，提交成果</a><a class="text-link" href="#delay-lab">可选扩展：看看命令延迟</a></div></section>`;
+  return `<div class="page-heading"><div><p class="eyebrow">ROUND 01 · SIMULATION FIRST</p><h1>先让机器人动起来。</h1><p class="subtitle">先预测，再改参数。用三条轨迹理解差速底盘的运动。</p></div></div><div class="notice"><b>理想运动学仿真。</b> 这里没有摩擦、质量或接触求解。第一轮先学会解释运动，再用 MuJoCo 比较物理模型。</div><div class="lab-layout"><section class="lab-controls"><span class="section-kicker">小车参数</span><h2>两只轮子，一条轨迹</h2><p>轮半径 0.1 m · 轮距 0.5 m<br>从原点出发，朝向世界坐标 +x</p><label for="wheel-left">左轮速度 <output id="left-value">2 rad/s</output></label><input type="range" id="wheel-left" min="-6" max="6" step="0.1" value="2"><label for="wheel-right">右轮速度 <output id="right-value">2 rad/s</output></label><input type="range" id="wheel-right" min="-6" max="6" step="0.1" value="2"><label for="wheel-dt">积分步长</label><select id="wheel-dt"><option value="0.02">0.02 秒 · 较细</option><option value="0.1">0.1 秒</option><option value="0.5">0.5 秒 · 较粗</option></select><div class="preset-row"><button data-preset="2,2">直行</button><button data-preset="2,4">转弯</button><button data-preset="-2,2">原地旋转</button></div><div class="button-row"><button class="button" id="run-wheels">运行 6 秒仿真</button><button class="button secondary" id="restart-wheels" disabled>从头重跑</button></div><p id="wheel-status" role="status">选择参数后点击运行；连续点击不会打断当前仿真。</p><p class="muted">蓝线：欧拉积分轨迹<br>虚线：相同输入的解析轨迹<br>白色短线：小车前方</p><a class="text-link" href="#lesson/${labTargetId()}">阅读对应课程</a></section><section class="lab-results"><div class="section-heading"><h2>小车的世界坐标</h2><span id="wheel-time">t = 0.00 s</span></div><svg id="wheel-chart" viewBox="0 0 760 430" role="img" aria-labelledby="wheel-title wheel-desc"></svg><div class="lab-metrics" id="wheel-metrics" aria-live="polite"></div><p id="wheel-explanation"></p><p class="muted">结果保存到：${esc(byId(labTargetId()).title)}</p><button class="button secondary" id="save-wheel">将本次实验记入报告</button></section></div><section class="reference-note"><h2>本轮要解释的三个现象</h2><ol><li>为什么两轮同速时走直线，反向同速时原地旋转？</li><li>保持轮速不变，增大步长后与解析轨迹的误差为什么改变？</li><li>这个模型里没有质量和摩擦，你能用它验证小车打滑吗？</li></ol><p>积分公式：x[k+1]=x[k]+v·cosθ[k]·Δt；y[k+1]=y[k]+v·sinθ[k]·Δt；θ[k+1]=θ[k]+ω·Δt。速度命令被立即执行；不模拟执行器响应、接触、打滑与噪声。</p><div class="button-row"><a class="button" href="#lesson/${labTargetId()}">填写解释，提交成果</a><a class="text-link" href="#delay-lab">可选扩展：看看命令延迟</a></div></section>`;
 }
 function drawWheels(animate=true){
   cancelAnimationFrame(wheelAnimation);
   wheelResult=differentialDrive({left:Number($('#wheel-left').value),right:Number($('#wheel-right').value),dt:Number($('#wheel-dt').value)});
+  wheelRunning=animate;
+  $('#run-wheels').disabled=animate;$('#run-wheels').textContent=animate?'仿真运行中…':'运行 6 秒仿真';
+  $('#restart-wheels').disabled=!animate;$('#save-wheel').disabled=true;$('#save-wheel').textContent='将本次实验记入报告';
+  $('#wheel-status').textContent=animate?'正在运行，连续点击不会重置。需要重新开始时点击“从头重跑”。':'已就绪，点击运行开始。修改参数后需重新运行，再记录结果。';
   const r=wheelResult,cx=380,cy=215,scale=52,xy=p=>`${(cx+p.x*scale).toFixed(2)},${(cy-p.y*scale).toFixed(2)}`;
   const analytic=Array.from({length:181},(_,i)=>{const t=i/30;return Math.abs(r.omega)<1e-10?{x:r.v*t,y:0}:{x:r.v/r.omega*Math.sin(r.omega*t),y:r.v/r.omega*(1-Math.cos(r.omega*t))};});
   $('#wheel-chart').innerHTML=`<title id="wheel-title">差速小车运动学仿真</title><desc id="wheel-desc">左轮 ${r.left}、右轮 ${r.right} rad/s，线速度 ${r.v.toFixed(2)} m/s，角速度 ${r.omega.toFixed(2)} rad/s。最终位置 x=${r.final.x.toFixed(3)}, y=${r.final.y.toFixed(3)} 米。</desc><defs><pattern id="grid" width="52" height="52" patternUnits="userSpaceOnUse" x="${cx}" y="${cy}"><path d="M 52 0 L 0 0 0 52" fill="none" stroke="#e5eaf3" stroke-width="1"/></pattern></defs><rect width="760" height="430" fill="#f9fbff"/><rect width="760" height="430" fill="url(#grid)"/><line x1="20" y1="215" x2="740" y2="215" stroke="#c1cada"/><line x1="380" y1="20" x2="380" y2="410" stroke="#c1cada"/><text x="735" y="238" text-anchor="end">+x / m</text><text x="396" y="27">+y / m</text><text x="390" y="235">0</text><text x="432" y="235">1</text><text x="20" y="410">网格：1 m</text><polyline points="${analytic.map(xy).join(' ')}" stroke="#8996b0" stroke-width="2" stroke-dasharray="5 6" fill="none"/><polyline id="wheel-path" points="${xy(r.samples[0])}" stroke="#254ad6" stroke-width="3" fill="none"/><g id="wheel-robot"><rect x="-11" y="-11" width="22" height="22" rx="4" fill="#254ad6"/><rect x="-8" y="-16" width="16" height="5" rx="1" fill="#17243c"/><rect x="-8" y="11" width="16" height="5" rx="1" fill="#17243c"/><path d="M5 -7V7" stroke="white" stroke-width="3"/></g>`;
   $('#wheel-metrics').innerHTML=`<div><b>${r.v.toFixed(2)}<small> m/s</small></b><span>理想线速度</span></div><div><b>${r.omega.toFixed(2)}<small> rad/s</small></b><span>理想角速度</span></div><div><b>${r.error.toFixed(4)}<small> m</small></b><span>6 秒积分终点误差</span></div>`;
   $('#wheel-explanation').textContent=`计算的终点：x=${r.final.x.toFixed(3)} m，y=${r.final.y.toFixed(3)} m，累计航向=${(r.final.theta*180/Math.PI).toFixed(1)}°。${Math.abs(r.v)<1e-9?(Math.abs(r.omega)<1e-9?'两轮不动，位置与朝向保持不变。':'平均轮速为零，位置不变但朝向改变。'):Math.abs(r.omega)<1e-9?'两轮速度相同，保持朝向直行。':'轮速不同，形成弧线；步长影响离散轨迹的误差。'}`;
   const start=performance.now();
-  const paint=now=>{if(!$('#wheel-robot'))return;const t=animate?Math.min(6,(now-start)/1000):6,i=Math.min(r.samples.length-1,Math.floor(t/r.dt)),p=r.samples[i];$('#wheel-path').setAttribute('points',r.samples.slice(0,i+1).map(xy).join(' '));$('#wheel-robot').setAttribute('transform',`translate(${xy(p)}) rotate(${-p.theta*180/Math.PI})`);$('#wheel-time').textContent=`t = ${p.t.toFixed(2)} s`;if(t<6)wheelAnimation=requestAnimationFrame(paint);};
+  const robot=$('#wheel-robot'),path=$('#wheel-path'),time=$('#wheel-time');
+  const paint=now=>{
+    if(!robot.isConnected)return;
+    const t=animate?Math.min(r.duration,(now-start)/1000):0;
+    const i=t>=r.duration?r.samples.length-1:Math.min(r.samples.length-1,Math.floor(t/r.dt)),p=r.samples[i];
+    path.setAttribute('points',r.samples.slice(0,i+1).map(xy).join(' '));
+    robot.setAttribute('transform',`translate(${xy(p)}) rotate(${-p.theta*180/Math.PI})`);time.textContent=`t = ${p.t.toFixed(2)} s`;
+    if(animate&&t<r.duration)wheelAnimation=requestAnimationFrame(paint);
+    else if(animate){wheelAnimation=0;wheelRunning=false;$('#run-wheels').disabled=false;$('#run-wheels').textContent='再运行一次（6 秒）';$('#restart-wheels').disabled=true;$('#save-wheel').disabled=false;$('#wheel-status').textContent='仿真完成。可以记录结果、再运行一次，或修改参数进行对照。';}
+  };
   paint(start);
 }
 function bindExtras(l){
@@ -165,10 +178,12 @@ function bindExtras(l){
   });
   if($('#published-reviews'))fetch('./reviews.json').then(r=>{if(!r.ok)throw Error();return r.json();}).then(data=>{const el=$('#published-reviews');if(!el)return;el.innerHTML=data.reviews.length?`<h3>已记录的评审</h3>${data.reviews.map(r=>`<div class="review-item"><b>${esc(r.verdict)} · ${esc(r.lessonId)}</b><p>${esc(r.summary)}</p><p>下一步：${esc(r.nextStep)}</p>${/^https:\/\/github\.com\/Alisahhh\/learning-page\/issues\/\d+$/.test(r.issueUrl)?`<a class="text-link" href="${esc(r.issueUrl)}" target="_blank" rel="noopener noreferrer">对应成果 ↗</a>`:''}</div>`).join('')}`:'<p class="muted" style="margin-top:16px">还没有实际评审记录。提交成果后，说一句“检查进度”，我会读取并评审。</p>';}).catch(()=>{if($('#published-reviews'))$('#published-reviews').textContent='评审记录暂时无法加载。';});
   if($('#run-wheels')){
-    for(const id of ['left','right'])$('#wheel-'+id).addEventListener('input',()=>{$('#'+id+'-value').textContent=$('#wheel-'+id).value+' rad/s';});
-    document.querySelectorAll('[data-preset]').forEach(b=>b.addEventListener('click',()=>{const [left,right]=b.dataset.preset.split(',');$('#wheel-left').value=left;$('#wheel-right').value=right;$('#left-value').textContent=left+' rad/s';$('#right-value').textContent=right+' rad/s';drawWheels();}));
-    $('#run-wheels').addEventListener('click',()=>drawWheels());
-    $('#save-wheel').addEventListener('click',()=>{const r=wheelResult;update(labTargetId(),v=>{v.report.result+=(v.report.result?'\n\n':'')+`[网页运动学实验 ${date(Date.now())}] 左轮=${r.left} rad/s，右轮=${r.right} rad/s，dt=${r.dt} s，时长=${r.duration} s；v=${r.v.toFixed(3)} m/s，ω=${r.omega.toFixed(3)} rad/s；终点 x=${r.final.x.toFixed(4)} m，y=${r.final.y.toFixed(4)} m；累计 θ=${r.final.theta.toFixed(4)} rad；相对解析解的位置误差=${r.error.toFixed(6)} m。无摩擦/接触/执行器模型。预测与解释待本人填写。`;});toast('参数和结果已写入第 '+byId(labTargetId()).number+' 章报告，请补上预测、解释与局限。');});
+    for(const id of ['left','right'])$('#wheel-'+id).addEventListener('input',()=>{$('#'+id+'-value').textContent=$('#wheel-'+id).value+' rad/s';drawWheels(false);});
+    document.querySelectorAll('[data-preset]').forEach(b=>b.addEventListener('click',()=>{const [left,right]=b.dataset.preset.split(',');$('#wheel-left').value=left;$('#wheel-right').value=right;$('#left-value').textContent=left+' rad/s';$('#right-value').textContent=right+' rad/s';drawWheels(false);}));
+    $('#wheel-dt').addEventListener('change',()=>drawWheels(false));
+    $('#run-wheels').addEventListener('click',()=>{if(!wheelRunning)drawWheels();});
+    $('#restart-wheels').addEventListener('click',()=>drawWheels());
+    $('#save-wheel').addEventListener('click',()=>{if(wheelRunning||$('#save-wheel').disabled||!wheelResult)return;const r=wheelResult;update(labTargetId(),v=>{v.report.result+=(v.report.result?'\n\n':'')+`[网页运动学实验 ${date(Date.now())}] 左轮=${r.left} rad/s，右轮=${r.right} rad/s，dt=${r.dt} s，时长=${r.duration} s；v=${r.v.toFixed(3)} m/s，ω=${r.omega.toFixed(3)} rad/s；终点 x=${r.final.x.toFixed(4)} m，y=${r.final.y.toFixed(4)} m；累计 θ=${r.final.theta.toFixed(4)} rad；相对解析解的位置误差=${r.error.toFixed(6)} m。无摩擦/接触/执行器模型。预测与解释待本人填写。`;});$('#save-wheel').disabled=true;$('#save-wheel').textContent='本次结果已记入报告';toast('参数和结果已写入第 '+byId(labTargetId()).number+' 章报告，请补上预测、解释与局限。');});
     drawWheels(false);
   }
 }

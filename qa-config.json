@@ -1,5 +1,6 @@
 {
-  "endpoint": "",
+  "endpoint": "https://alisa-learning-qa.embodied-learning-page.workers.dev/ask",
+  "verificationStatus": "pending",
   "providerLabel": "DeepSeek",
   "requiresAccessCode": true
 }

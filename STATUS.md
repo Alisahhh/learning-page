@@ -6,10 +6,11 @@
 
 ### 最新配置检查
 
-- 用户表示填好后，实际发现普通变量 DeepSeek_key，两个预期 Secret 均不存在。已将平台中该值迁移到 DEEPSEEK_API_KEY Secret，并通过 settings PATCH 删除旧普通变量；未输出、写入本地或提交任何密钥值。
-- CLI 再次核查仅有 DEEPSEEK_API_KEY（secret_text）；QA_ACCESS_CODE 尚不存在，已请用户在平台添加至少 24 位随机访问码并保存部署。后续不要覆盖用户自行设置的访问码。
-- 本机 HTTP 连接仍失败，内置浏览器打开 Worker 返回 net::ERR_BLOCKED_BY_CLIENT。尚未验证真实推理、线上鉴权或用户外部浏览器可达性；网页 endpoint 保持为空，复制提问包继续可用。不要把当前状态称为 AI 已接通。
-- 下一步先核查 QA_ACCESS_CODE 名称/类型（不读值），由用户外部浏览器确认 /ask 地址可达；网络与配置就绪后接入前端，由用户输入访问码验证真实问题。访问码和 API key 都不要求发到聊天。
+- 用户明确要求助手接管配置。已保留 DEEPSEEK_API_KEY Secret，生成新的 48 位随机个人访问码并配置 QA_ACCESS_CODE Secret；通过官方 API 再次确认两者均为 secret_text。
+- 访问码只交付到用户本机 outputs/问答访问码.txt，文件 ACL 仅允许当前用户访问；不在仓库、网页、命令输出或状态文档中记录值。无需用户继续操作 Cloudflare。API key 的有效性尚未通过真实推理验证。
+- qa-config.json 已接入已部署的 /ask 地址，verificationStatus=pending；页面明确提示首次回答待验证。连接失败显示中文说明并保留完整复制入口，鉴权、限速及私人记录边界不变。
+- npm run build 通过：课程、存储、实验检查及后端鉴权/输入/限速/错误脱敏模拟测试全部通过。真实请求再次连接超时，未收到模型回答；不是模型成功或密钥有效性的证据。
+- 本轮待检查 Pages 发布与线上配置。下一步从用户学习网页的一次真实提问结果判断网络和模型是否可用；不要再要求用户反复配置已经存在的 Secret，也不要擅自再次重置访问码。
 
 ### 此前部署记录
 

@@ -182,6 +182,76 @@
       "topic": "VLA",
       "read": "先看输入输出、训练数据、评测任务和局限，再决定是否复现。",
       "question": "换了机器人本体，动作空间和归一化统计是否还能直接沿用？"
+    },
+    {
+      "id": "ros2-why",
+      "type": "官方设计说明",
+      "title": "Why ROS 2?",
+      "url": "https://design.ros2.org/articles/why_ros2.html",
+      "topic": "系统历史",
+      "read": "阅读原有假设与新增使用场景；不要求迁移已有 ROS 系统。",
+      "question": "通信框架演进解决哪些条件，哪些任务问题仍需自己定义？",
+      "checkedAt": "2026-10-02"
+    },
+    {
+      "id": "gym-env",
+      "type": "官方文档",
+      "title": "Gymnasium · Env 接口",
+      "url": "https://gymnasium.farama.org/api/env/",
+      "topic": "系统闭环",
+      "read": "看 reset、step 与观测/动作空间。",
+      "question": "step 的任务语义与驱动循环有什么不同？",
+      "checkedAt": "2026-10-02"
+    },
+    {
+      "id": "lerobot-rtc",
+      "type": "官方开发文档",
+      "title": "LeRobot · Real-Time Chunking",
+      "url": "https://huggingface.co/docs/lerobot/main/rtc",
+      "topic": "当前进展",
+      "read": "看动作队列、异步生成与衔接，main 是开发分支。",
+      "question": "隐藏推理等待之后，旧动作与新观测还有什么冲突？",
+      "checkedAt": "2026-10-02"
+    },
+    {
+      "id": "rep103",
+      "type": "官方规范源码",
+      "title": "REP-103 · 单位与坐标约定",
+      "url": "https://github.com/ros-infrastructure/rep/blob/master/rep-0103.rst",
+      "topic": "坐标与单位",
+      "read": "看 SI 单位、右手系、机体与 optical frame 的轴约定。",
+      "question": "为什么相机向量不能直接当作机体向量？",
+      "checkedAt": "2026-10-02"
+    },
+    {
+      "id": "rep105",
+      "type": "官方规范源码",
+      "title": "REP-105 · 移动平台参考系",
+      "url": "https://github.com/ros-infrastructure/rep/blob/master/rep-0105.rst",
+      "topic": "坐标与估计",
+      "read": "比较 map、odom、base_link 的职责与连续性。",
+      "question": "定位修正产生的跳变是否代表执行器真的突然运动？",
+      "checkedAt": "2026-10-02"
+    },
+    {
+      "id": "modern-wheel",
+      "type": "作者教材",
+      "title": "Modern Robotics · Wheeled Mobile Robots",
+      "url": "https://modernrobotics.northwestern.edu/nu-gm-book-resource/13-1-wheeled-mobile-robots/",
+      "topic": "运动模型",
+      "read": "已读网页文字稿；先读第 13 章概述，再按需看非完整约束。未观看视频。",
+      "question": "不能瞬时侧移，为何仍可通过前后转向到达侧面的目标？",
+      "checkedAt": "2026-10-02"
+    },
+    {
+      "id": "mujoco-computation",
+      "type": "官方文档",
+      "title": "MuJoCo · 数值积分与计算",
+      "url": "https://mujoco.readthedocs.io/en/stable/computation/index.html",
+      "topic": "数值方法",
+      "read": "读 Integrators、Choosing timestep and integrator 及新方法的限制。",
+      "question": "改变步长和改变物理参数是在解决同一类误差吗？",
+      "checkedAt": "2026-10-02"
     }
   ]
 }

@@ -26,7 +26,7 @@ npm start
 
 ## 按成果继续学习
 
-每轮只发布一个主要新单元。其他主题是候选路线，不能因点击“完成”自动解锁。提交成果后，在维护会话说“检查进度”，维护者执行 `npm run submissions` 读取 Issues 和补充评论，再依据证据安排下一课。没有配置后台自动监控。
+当前开放 S1 仿真入门，以及用户要求追加的 [01 系统闭环](https://alisahhh.github.io/learning-page/#lesson/loop) 和 [02 数学与运动模型](https://alisahhh.github.io/learning-page/#lesson/math)。默认每轮推进一个主要新单元。其他主题是候选路线，不能因点击“完成”自动解锁。提交成果后，在维护会话说“检查进度”，维护者执行 `npm run submissions` 读取 Issues 和补充评论，再依据证据安排下一课。没有配置后台自动监控。
 
 ## 后续维护入口
 

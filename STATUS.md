@@ -2,9 +2,18 @@
 
 最后更新：2026-10-02（Asia/Shanghai）
 
-## 当前结论
+## 本轮追加两章（2026-10-02）
 
-网站与第一课 S1 已上线：https://alisahhh.github.io/learning-page/#lesson/sim-first 。main 已推送，Pages 使用 GitHub Actions；首次构建与部署均成功。
+- 应用户要求，loop 与 math 已完成为基础补充课，当前主课保持 sim-first。现有 3 章已开放、10 项候选主题、27 份来源。
+- 两章均有历史、原理、例题、当前进展、实验、3 题小测及验收要求。新增资料核查了 ROS 官方设计、REP-103/105 原文、作者教材文字稿、Gymnasium API、LeRobot RTC main 与 MuJoCo 计算文档；未复现近期项目性能。
+- 实验链接携带课程归属；浏览器实测延迟结果写入 loop，1.8 rad/s 轮速结果写入 math，刷新后保留，小测 3/3；S1 旧笔记仍在。测试仅使用 localhost 独立来源，未上传测试成果。
+- npm run build 通过。三章课程结构、数据保存格式、评分、报告降级与运动模型检查通过。
+- 本轮改动准备推送；线上状态以 GitHub Actions 最新成功运行和课程内容核验为准。
+- 当前没有新学习成果评审，提前开放不代表掌握。后续根据实际报告选主课下一步。
+
+## 首次上线结论
+
+原网站与第一课 S1 已上线：https://alisahhh.github.io/learning-page/#lesson/sim-first 。main 已推送，Pages 使用 GitHub Actions；首次构建与部署均成功。
 
 ## 本轮目标与结果
 

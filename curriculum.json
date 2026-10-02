@@ -1,0 +1,299 @@
+{
+  "schemaVersion": 1,
+  "revision": "2026-10-02",
+  "currentLessonId": "sim-first",
+  "lessons": [
+    {
+      "id": "sim-first",
+      "number": "S1",
+      "stage": "先在仿真里看见",
+      "area": "第一轮 · 仿真入门",
+      "title": "先让轮式机器人在仿真里动起来",
+      "summary": "改轮速、看轨迹、解释现象，再分清数学模型与物理仿真的边界。",
+      "prerequisites": [],
+      "goals": [
+        "预测两轮同速、差速和反向转动时的轨迹",
+        "解释模型、状态、动作与仿真步进的关系",
+        "分清运动学、接触动力学与并行训练环境各自解决的问题"
+      ],
+      "published": true
+    },
+    {
+      "id": "loop",
+      "number": "01",
+      "stage": "建立共同语言",
+      "area": "系统 × 算法",
+      "title": "把 ROS 系统，连成学习闭环",
+      "summary": "从 topic、控制器和驱动出发，找到策略真正工作的地方。",
+      "prerequisites": [],
+      "goals": [
+        "区分观测、策略、动作与底层控制",
+        "说明训练、推理和评测分别做什么",
+        "给一个失败现象提出可验证的排查假设"
+      ],
+      "published": false
+    },
+    {
+      "id": "math",
+      "number": "02",
+      "stage": "建立共同语言",
+      "area": "数学 × 运动",
+      "title": "只补用得上的数学与运动模型",
+      "summary": "用差速底盘理解坐标变换、离散时间和误差。",
+      "prerequisites": [
+        "loop"
+      ],
+      "goals": [
+        "写出差速底盘的理想运动模型",
+        "说明坐标系与单位错误如何影响策略",
+        "区分模型误差与测量误差"
+      ],
+      "published": false
+    },
+    {
+      "id": "data",
+      "number": "03",
+      "stage": "做出第一个策略",
+      "area": "数据工程",
+      "title": "从 rosbag 到能训练的数据",
+      "summary": "时间对齐、动作语义和数据划分，决定模型究竟学到了什么。",
+      "prerequisites": [
+        "loop"
+      ],
+      "goals": [
+        "定义 episode 与样本的数据契约",
+        "避免未来信息泄漏和轨迹泄漏",
+        "设计覆盖成功与失败场景的数据检查"
+      ],
+      "published": false
+    },
+    {
+      "id": "bc",
+      "number": "04",
+      "stage": "做出第一个策略",
+      "area": "算法 · 模仿学习",
+      "title": "训练第一个“会模仿”的小策略",
+      "summary": "从监督学习入门，再观察误差怎样在闭环里累积。",
+      "prerequisites": [
+        "math",
+        "data"
+      ],
+      "goals": [
+        "解释前向、损失、反向传播与更新",
+        "用简单基线比较行为克隆策略",
+        "区分离线拟合与闭环能力"
+      ],
+      "published": false
+    },
+    {
+      "id": "rl",
+      "number": "05",
+      "stage": "理解训练与仿真",
+      "area": "算法 · 强化学习",
+      "title": "奖励如何变成一个策略",
+      "summary": "从到点任务理解 MDP、回报、价值函数与 PPO。",
+      "prerequisites": [
+        "bc"
+      ],
+      "goals": [
+        "定义任务的观测、动作、奖励和终止",
+        "区分即时奖励、回报与价值",
+        "解释 PPO 的基本训练过程"
+      ],
+      "published": false
+    },
+    {
+      "id": "sim",
+      "number": "06",
+      "stage": "理解训练与仿真",
+      "area": "仿真工程",
+      "title": "仿真环境也是需要验收的软件",
+      "summary": "从 step / reset 到物理步长、终止逻辑和域随机化。",
+      "prerequisites": [
+        "math",
+        "rl"
+      ],
+      "goals": [
+        "区分物理步长与策略更新周期",
+        "正确处理终止和外部时间截断",
+        "在训练前验证环境与重置逻辑"
+      ],
+      "published": false
+    },
+    {
+      "id": "cloud",
+      "number": "07",
+      "stage": "把系统做可靠",
+      "area": "云侧 AI Infra",
+      "title": "训练慢，先找到 GPU 在等什么",
+      "summary": "把数据、算力、通信和实验复现放在同一条流水线上。",
+      "prerequisites": [
+        "bc",
+        "sim"
+      ],
+      "goals": [
+        "分解一个训练 step 的耗时",
+        "解释数据并行的收益与代价",
+        "记录足够信息来复现实验"
+      ],
+      "published": false
+    },
+    {
+      "id": "edge",
+      "number": "08",
+      "stage": "把系统做可靠",
+      "area": "端侧 AI Infra",
+      "title": "模型跑得快，机器人就反应快吗",
+      "summary": "把推理放回传感器、调度与控制的完整链路中。",
+      "prerequisites": [
+        "loop",
+        "bc"
+      ],
+      "goals": [
+        "测量端到端延迟及尾延迟",
+        "验证模型转换前后的数值与动作一致性",
+        "说明策略超时和队列堆积的处理方式"
+      ],
+      "published": false
+    },
+    {
+      "id": "humanoid",
+      "number": "09",
+      "stage": "走向人形与前沿",
+      "area": "人形机器人",
+      "title": "从速度指令，走到全身关节控制",
+      "summary": "识别浮动基座、接触、PD 控制与训练部署之间的缝隙。",
+      "prerequisites": [
+        "rl",
+        "sim",
+        "edge"
+      ],
+      "goals": [
+        "说明人形与轮式底盘控制的关键差异",
+        "读懂关节目标偏移与 PD 控制链路",
+        "建立训练、sim2sim 与部署的对齐清单"
+      ],
+      "published": false
+    },
+    {
+      "id": "vla",
+      "number": "10",
+      "stage": "走向人形与前沿",
+      "area": "视觉语言动作模型",
+      "title": "把 VLA 放回机器人架构里",
+      "summary": "知道大模型解决哪一层问题，以及它仍然依赖什么。",
+      "prerequisites": [
+        "data",
+        "bc",
+        "edge"
+      ],
+      "goals": [
+        "解释 VLA 的输入输出与适用层次",
+        "区分语言理解与可执行动作",
+        "评估是否值得在当前任务引入大模型"
+      ],
+      "published": false
+    },
+    {
+      "id": "evaluation",
+      "number": "11",
+      "stage": "留下完整成果",
+      "area": "实验方法",
+      "title": "让“效果不错”变成可复核的证据",
+      "summary": "固定协议、失败分类、消融与诚实的结论边界。",
+      "prerequisites": [
+        "cloud",
+        "edge"
+      ],
+      "goals": [
+        "设计有基线和留出集的评测协议",
+        "区分调参集与最终测试集",
+        "用证据支持结论并标出不确定性"
+      ],
+      "published": false
+    },
+    {
+      "id": "capstone",
+      "number": "12",
+      "stage": "留下完整成果",
+      "area": "综合项目",
+      "title": "交付一个你能解释的机器人学习系统",
+      "summary": "轮式闭环做主项目，人形接口分析做进阶成果。",
+      "prerequisites": [
+        "evaluation",
+        "humanoid",
+        "vla"
+      ],
+      "goals": [
+        "串起数据、训练、仿真、部署与评测",
+        "明确系统的适用范围和故障边界",
+        "整理可供下一轮评审的完整证据"
+      ],
+      "published": false
+    }
+  ],
+  "stages": [
+    {
+      "name": "先在仿真里看见",
+      "tag": "CURRENT ROUND · SIMULATION",
+      "description": "这是当前唯一发布的课程。先观察、预测和解释运动，再按成果决定下一步。",
+      "ids": [
+        "sim-first"
+      ]
+    },
+    {
+      "name": "建立共同语言",
+      "tag": "FOUNDATIONS",
+      "description": "从你熟悉的 ROS 系统出发，建立观测、动作、运动模型与闭环的联系。",
+      "ids": [
+        "loop",
+        "math"
+      ]
+    },
+    {
+      "name": "做出第一个策略",
+      "tag": "DATA & LEARNING",
+      "description": "把消息变成数据，把示范变成策略，再用闭环表现检验它。",
+      "ids": [
+        "data",
+        "bc"
+      ]
+    },
+    {
+      "name": "理解训练与仿真",
+      "tag": "RL & SIMULATION",
+      "description": "先定义任务、验收环境，再理解奖励如何驱动策略改进。",
+      "ids": [
+        "rl",
+        "sim"
+      ]
+    },
+    {
+      "name": "把系统做可靠",
+      "tag": "AI INFRA",
+      "description": "测量云端训练瓶颈和端侧延迟，把复现、性能与故障处理纳入设计。",
+      "ids": [
+        "cloud",
+        "edge"
+      ]
+    },
+    {
+      "name": "走向人形与前沿",
+      "tag": "HUMANOID & VLA",
+      "description": "理解更复杂的本体与动作接口，有依据地阅读论文和选择技术。",
+      "ids": [
+        "humanoid",
+        "vla"
+      ]
+    },
+    {
+      "name": "留下完整成果",
+      "tag": "EVIDENCE",
+      "description": "完成轮式闭环项目与人形接口审计，把结论落实到可复核的证据。",
+      "ids": [
+        "evaluation",
+        "capstone"
+      ]
+    }
+  ]
+}

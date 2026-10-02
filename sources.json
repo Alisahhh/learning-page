@@ -1,0 +1,187 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-02",
+  "sources": [
+    {
+      "id": "gazebo-history",
+      "type": "官方历史",
+      "title": "Gazebo · 从 2002 年的户外机器人仿真出发",
+      "url": "https://classic.gazebosim.org/",
+      "topic": "仿真史",
+      "read": "阅读页面 History；这是历史资料，不是新项目安装指南。",
+      "question": "为什么传感器、环境与 ROS 系统联调会催生这类仿真平台？"
+    },
+    {
+      "id": "mujoco-history",
+      "type": "官方历史",
+      "title": "MuJoCo · 2021 年免费，2022 年开源",
+      "url": "https://deepmind.google/blog/open-sourcing-mujoco/",
+      "topic": "仿真史",
+      "read": "看开放代码与物理仿真研究协作的关系，区分商业许可变化和技术能力变化。",
+      "question": "开源解决了可获得性与协作问题，是否就自动保证物理预测准确？"
+    },
+    {
+      "id": "mujoco-python",
+      "type": "官方文档",
+      "title": "MuJoCo · Python 与交互查看器",
+      "url": "https://mujoco.readthedocs.io/en/latest/python.html",
+      "topic": "第一轮实验",
+      "read": "阅读安装与 passive viewer。先让模型加载、step、读取状态形成最小循环。",
+      "question": "是谁推进物理时间？渲染窗口刷新与物理步进是一回事吗？"
+    },
+    {
+      "id": "playground",
+      "type": "论文 / 项目",
+      "title": "MuJoCo Playground · 2025 的并行学习工作流",
+      "url": "https://playground.mujoco.org/",
+      "topic": "仿真前沿",
+      "read": "看项目中的任务、本体与训练工作流，先理解用途，不要求首轮复现。",
+      "question": "为什么学习系统需要大量并行环境，而系统联调更关心完整软件链路？"
+    },
+    {
+      "id": "newton",
+      "type": "官方进展",
+      "title": "Newton · GPU 与可扩展物理求解",
+      "url": "https://developer.nvidia.com/newton-physics",
+      "topic": "仿真前沿",
+      "read": "理解 Warp、求解器与机器人学习框架之间的关系。性能宣传需结合具体模型和硬件验证。",
+      "question": "GPU 并行、接触准确性、传感器渲染和系统集成是否是同一个指标？"
+    },
+    {
+      "id": "torch",
+      "type": "官方文档",
+      "title": "PyTorch · Learn the Basics",
+      "url": "https://docs.pytorch.org/tutorials/beginner/basics/intro.html",
+      "topic": "算法基础",
+      "read": "依次看张量、自动求导、优化循环、模型保存。",
+      "question": "能否画出一次前向计算、反向传播和参数更新之间的关系？"
+    },
+    {
+      "id": "dagger",
+      "type": "论文",
+      "title": "DAgger · 为什么模仿会越走越偏",
+      "url": "https://arxiv.org/abs/1011.0686",
+      "topic": "模仿学习",
+      "read": "Ross 等，2011。先读引言与算法，再理解策略访问的状态分布。",
+      "question": "专家的数据分布与自己执行策略时遇到的状态为什么不同？"
+    },
+    {
+      "id": "ppo",
+      "type": "论文",
+      "title": "Proximal Policy Optimization Algorithms",
+      "url": "https://arxiv.org/abs/1707.06347",
+      "topic": "强化学习",
+      "read": "Schulman 等，2017。重点读 clipped surrogate objective 与算法流程。",
+      "question": "裁剪概率比在限制什么？它为什么不等于保证训练永远稳定？"
+    },
+    {
+      "id": "rlbook",
+      "type": "课程 / GitHub",
+      "title": "赵世钰 · 强化学习的数学原理",
+      "url": "https://github.com/MathFoundationRL/Book-Mathematical-Foundation-of-Reinforcement-Learning",
+      "topic": "强化学习",
+      "read": "先看基本概念、状态价值与 Bellman 方程；策略梯度和 Actor-Critic 留到第二轮。",
+      "question": "用一个三步导航任务，算出奖励、回报与状态价值的区别。"
+    },
+    {
+      "id": "bili",
+      "type": "Bilibili",
+      "title": "赵世钰 · 官方中文课程入口",
+      "url": "https://space.bilibili.com/2044042934",
+      "topic": "强化学习",
+      "read": "作者书籍仓库链接的 B 站账号。按“基本概念 → 贝尔曼方程 → 策略梯度”选择对应课程。",
+      "question": "看完一节，关掉视频，用自己的例子解释概念；不以播放完成代替理解。",
+      "note": "已从作者仓库核对入口，未逐集审看视频；分集名称以平台当前展示为准。"
+    },
+    {
+      "id": "mujoco",
+      "type": "官方文档",
+      "title": "MuJoCo · 模型、状态与仿真",
+      "url": "https://mujoco.readthedocs.io/en/stable/overview.html",
+      "topic": "仿真",
+      "read": "读 Introduction、Kinematic tree 与 Data-oriented design，区分 mjModel 和 mjData。",
+      "question": "改变质量与改变当前关节角，分别改变模型还是运行状态？"
+    },
+    {
+      "id": "gym",
+      "type": "官方文档",
+      "title": "Gymnasium · Handling Time Limits",
+      "url": "https://gymnasium.farama.org/tutorials/gymnasium_basics/handling_time_limits/",
+      "topic": "仿真",
+      "read": "重点看 termination / truncation 以及价值目标的 bootstrap。",
+      "question": "外部时间限制结束与任务真正终止，为什么要分别处理？"
+    },
+    {
+      "id": "isaac",
+      "type": "官方文档",
+      "title": "Isaac Lab · 从 Jetbot 环境开始",
+      "url": "https://isaac-sim.github.io/IsaacLab/main/source/setup/walkthrough/index.html",
+      "topic": "仿真",
+      "read": "按环境设计、机器人接入、训练的顺序读。安装时按所选版本文档锁定依赖。",
+      "question": "观测、动作和重置分别在哪一层配置？"
+    },
+    {
+      "id": "walk",
+      "type": "论文",
+      "title": "Learning to Walk in Minutes",
+      "url": "https://arxiv.org/abs/2109.11978",
+      "topic": "腿式运动",
+      "read": "Rudin 等，CoRL 2021。看并行采样、课程学习与实验设置。论文实验对象是 ANYmal 四足。",
+      "question": "并行环境怎样减少墙钟时间？哪些结论不能直接推广到人形？"
+    },
+    {
+      "id": "unitree",
+      "type": "GitHub",
+      "title": "Unitree RL Lab · 人形工程阅读",
+      "url": "https://github.com/unitreerobotics/unitree_rl_lab",
+      "topic": "人形机器人",
+      "read": "先读任务配置和部署中的观测／动作映射，再看 sim2sim 流程。",
+      "question": "训练与部署的关节顺序、动作缩放、历史帧是否一致？"
+    },
+    {
+      "id": "lerobot",
+      "type": "官方文档",
+      "title": "LeRobot · 数据与策略工作流",
+      "url": "https://huggingface.co/docs/lerobot/main/en/index",
+      "topic": "数据 / 模仿学习",
+      "read": "看数据集中的视频、状态和动作如何组织，再看训练与评测入口。",
+      "question": "一个 episode 的边界如何保存？动作是什么坐标系和单位？"
+    },
+    {
+      "id": "profile",
+      "type": "官方文档",
+      "title": "PyTorch Profiler · 先找到瓶颈",
+      "url": "https://docs.pytorch.org/tutorials/recipes/recipes/profiler_recipe.html",
+      "topic": "云侧 Infra",
+      "read": "看 CPU / CUDA activity、时间线与算子统计。",
+      "question": "GPU 空闲是在等数据、CPU、通信，还是有同步点？"
+    },
+    {
+      "id": "ddp",
+      "type": "官方文档",
+      "title": "PyTorch · Distributed Data Parallel",
+      "url": "https://docs.pytorch.org/tutorials/intermediate/ddp_tutorial.html",
+      "topic": "云侧 Infra",
+      "read": "理解每个进程的模型副本、输入数据划分和梯度同步。",
+      "question": "加 GPU 后全局 batch 变了没有？比较的是吞吐还是达到目标精度的时间？"
+    },
+    {
+      "id": "ort",
+      "type": "官方文档",
+      "title": "ONNX Runtime · Performance Tuning",
+      "url": "https://onnxruntime.ai/docs/performance/tune-performance/",
+      "topic": "端侧 Infra",
+      "read": "从 profiling、线程配置和 I/O Binding 进入，按实际瓶颈选优化。",
+      "question": "只测推理调用耗时，遗漏了哪些端到端延迟？"
+    },
+    {
+      "id": "vla",
+      "type": "论文 / 项目",
+      "title": "OpenVLA · 视觉、语言到动作",
+      "url": "https://openvla.github.io/",
+      "topic": "VLA",
+      "read": "先看输入输出、训练数据、评测任务和局限，再决定是否复现。",
+      "question": "换了机器人本体，动作空间和归一化统计是否还能直接沿用？"
+    }
+  ]
+}

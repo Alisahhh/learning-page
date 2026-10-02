@@ -1,0 +1,8 @@
+{
+  "name": "embodied-learning-page",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": { "start": "node scripts/serve.mjs", "check": "node scripts/check.mjs", "build": "node scripts/check.mjs && node scripts/build.mjs", "submissions": "node scripts/read-submissions.mjs" },
+  "engines": { "node": ">=20" }
+}

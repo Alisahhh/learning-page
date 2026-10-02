@@ -2,7 +2,7 @@
 
 为熟悉 ROS、驱动、通信和部署的机器人工程师建设的中文学习站。从轮式机器人仿真开始，逐步连接算法、数据、仿真、云侧训练与端侧推理。
 
-当前已完成可运行网站与第一课 S1。远端发布状态见 [STATUS.md](STATUS.md)。
+[打开学习网站](https://alisahhh.github.io/learning-page/) · [直接进入第一课 S1](https://alisahhh.github.io/learning-page/#lesson/sim-first)。发布与检查记录见 [STATUS.md](STATUS.md)。
 
 ## 本地打开
 

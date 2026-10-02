@@ -1,6 +1,6 @@
 # 课内答疑后端（Cloudflare Workers）
 
-状态（2026-10-02）：后端已发布至 https://alisa-learning-qa.embodied-learning-page.workers.dev ，DEEPSEEK_API_KEY 与 QA_ACCESS_CODE 均已配置为 Secret。用户授权助手生成访问码并保存到本机私有文件。网页已配置 endpoint，首次真实回答待验证；本机请求连接超时。GitHub Pages 只发布前端，不部署本目录。
+状态（2026-10-02）：后端已发布至 https://alisa-learning-qa.embodied-learning-page.workers.dev ，两个 Secret 已配置。通过电脑现有系统代理完成真实 DeepSeek 调用，HTTP 200，约 4.4 秒返回；401/403/204 与 CORS 检查通过。网页配置为 verified，浏览器按钮端到端测试尚未完成。GitHub Pages 只发布前端，不部署本目录。
 
 ## 用户只需提供的设置
 

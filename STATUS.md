@@ -4,13 +4,16 @@
 
 ## 课内快速问答（2026-10-02）
 
-- 用户反馈课文有时难懂，要求 DeepSeek 答疑；用户没有服务器，已推荐 Cloudflare Workers。账号部署和新 Secret 尚未完成，未进行真实模型调用。
+- 部署续接：用户完成 Cloudflare OAuth（account:read、user:read、workers:write、workers_scripts:write）。Wrangler 4.147.0 安装与 dry-run 成功（57.29 KiB）。Worker 已发布：https://alisa-learning-qa.embodied-learning-page.workers.dev ，版本 00220308-aa6b-4c7b-a5e1-17b2fe85cf37。Secret 尚未配置，网页 endpoint 仍为空；没有真实模型调用。工具位于仓库外的 `../cloudflare-tools`，可通过 node 调用其中 `node_modules/wrangler/bin/wrangler.js`。
+- 本机对 workers.dev 地址的首次 HTTP 探测连接超时，尚未验证线上 503/403；不要把部署成功等同于当前网络可达。配置 Secret 后仍需验证用户浏览器能访问该服务，再启用网页问答。
+
+- 用户反馈课文有时难懂，要求 DeepSeek 答疑；用户没有服务器，采用 Cloudflare Workers。账号部署已完成，新 Secret 尚未配置，未进行真实模型调用。
 - 已实现每段“解释这段”、白话/ROS 例子/拆公式/理解检查四种快捷问题，以及包含公开课程资料的复制提问包。前端 endpoint 留空时明确显示未连接，不提供伪造回答。
 - 已准备 Workers 后端：服务端密钥、独立个人访问码、来源检查、6 次/60 秒近似限速、请求限长、超时和错误脱敏。Cloudflare 限速不是全局费用上限。
 - 本地检查通过：未授权/错误来源/错误角色/超长输入/限速均拒绝，模拟模型响应与上游错误处理正常；没有使用会话中出现的真实密钥。
 - 浏览器检查通过：段落自动带入、快捷问题、完整上下文复制；复制内容不含旧私人笔记，未配置时发送按钮禁用。学习记录格式未更改。
 - 提问入口已随提交 1434e44 部署成功：https://github.com/Alisahhh/learning-page/actions/runs/37017797344 。线上 qa.js、qa-context.js、qa-config.json、app.js 均 HTTP 200 且与构建一致。线上浏览器复查超时，本地交互已检查。Wrangler 版本查询得到 4.147.0，但临时 CLI 安装/干运行长期无输出，已取消，尚未确认 Workers 打包；部署前需完成此检查。
-- 下一步：登录用户的 Cloudflare，部署 backend/wrangler.jsonc；用户在平台填新 Secret；验证真实调用后配置 qa-config.json 并发布。当前只发布可复制的问答入口及待部署代码，不把 API 记为已接通。
+- 下一步：用户在 Worker 的 Settings → Variables and Secrets 填 DEEPSEEK_API_KEY 与至少 24 字符的 QA_ACCESS_CODE。验证真实调用后配置 qa-config.json 并发布。当前网页只启用可复制问答入口，不把 API 记为已接通。
 
 ## 本轮追加两章（2026-10-02）
 

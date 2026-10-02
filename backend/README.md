@@ -1,6 +1,6 @@
 # 课内答疑后端（Cloudflare Workers）
 
-状态：代码与本地模拟测试已准备；只有完成账户部署、secret 配置、线上验证后，才能启用站内 AI 回答。GitHub Pages 只发布前端，不部署本目录。
+状态（2026-10-02）：Wrangler 4.147.0 已打包并发布至 https://alisa-learning-qa.embodied-learning-page.workers.dev 。Secret 尚未配置、真实模型调用尚未验证，网页 endpoint 仍为空。GitHub Pages 只发布前端，不部署本目录。
 
 ## 用户只需提供的设置
 

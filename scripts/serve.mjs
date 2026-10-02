@@ -3,7 +3,7 @@ import {readFile} from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
-const publicFiles=new Set(['index.html','style.css','app.js','bootstrap.js','state.js','content.js','simulation.js','submission.js','curriculum.json','sources.json','reviews.json','favicon.svg','PLAN.md','README.md']);
+const publicFiles=new Set(['qa.js','qa-context.js','qa-config.json','index.html','style.css','app.js','bootstrap.js','state.js','content.js','simulation.js','submission.js','curriculum.json','sources.json','reviews.json','favicon.svg','PLAN.md','README.md']);
 const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.svg':'image/svg+xml','.md':'text/plain; charset=utf-8'};
 http.createServer(async(req,res)=>{
   try {const u=new URL(req.url,'http://localhost'),name=decodeURIComponent(u.pathname).replace(/^\/+|\/+$/g,'')||'index.html';

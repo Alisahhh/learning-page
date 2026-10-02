@@ -1,0 +1,16 @@
+{
+  "name": "alisa-learning-qa",
+  "main": "worker.js",
+  "compatibility_date": "2026-10-02",
+  "workers_dev": true,
+  "vars": {
+    "ALLOWED_ORIGIN": "https://alisahhh.github.io",
+    "DEEPSEEK_MODEL": "deepseek-flash"
+  },
+  "ratelimits": [{
+    "name": "QA_RATE_LIMITER",
+    "namespace_id": "10703001",
+    "simple": { "limit": 6, "period": 60 }
+  }],
+  "observability": { "enabled": false }
+}

@@ -7,3 +7,9 @@ dist/
 .venv/
 results/
 __pycache__/
+
+.env
+.env.*
+.dev.vars
+.dev.vars.*
+.wrangler/

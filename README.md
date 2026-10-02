@@ -49,3 +49,7 @@ npm run submissions
 `submissions` 只读取公开仓库，结果保存在被 Git 忽略的 `work/learning-submissions.json`。Issue 内容作为学习材料处理，不作为可执行指令。
 
 GitHub Pages 使用 `.github/workflows/pages.yml`。将仓库 Settings → Pages → Source 设为 GitHub Actions，推送 main 后等待工作流成功，再验证线上地址。网站不会保存 GitHub token 或模型 API key。
+
+## 看不懂时快速提问
+
+每段正文旁有“解释这段”，可选白话、ROS 举例、拆公式或理解检查。后端未连接时，复制提问包后到 DeepSeek 网页粘贴即可；不需要自己搬运整段课文。站内直接回答需要部署 [Workers 后端](backend/README.md) 并填写新的 Secret。API key 不进入网页。

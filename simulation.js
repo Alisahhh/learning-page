@@ -1,4 +1,13 @@
 // Ideal planar differential drive; deliberately excludes contact and actuator dynamics.
+// Display only: interpolate between Euler samples without changing the simulated result.
+export function playbackPose(result,time) {
+  const samples=result.samples,t=Math.max(0,Math.min(result.duration,time));
+  let lo=0,hi=samples.length-1;
+  while(lo<hi){const mid=Math.ceil((lo+hi)/2);if(samples[mid].t<=t)lo=mid;else hi=mid-1;}
+  const a=samples[lo],b=samples[Math.min(lo+1,samples.length-1)];
+  const fraction=b.t>a.t?Math.max(0,Math.min(1,(t-a.t)/(b.t-a.t))):0;
+  return {index:lo,t,x:a.x+(b.x-a.x)*fraction,y:a.y+(b.y-a.y)*fraction,theta:a.theta+(b.theta-a.theta)*fraction};
+}
 export function differentialDrive({left=2,right=2,dt=.02,duration=6,radius=.1,track=.5}={}) {
   if(![left,right,dt,duration,radius,track].every(Number.isFinite)||dt<=0||dt>1||duration<=0||duration>60||radius<=0||track<=0)throw Error('Invalid simulation parameters');
   const v=radius*(left+right)/2,omega=radius*(right-left)/track;

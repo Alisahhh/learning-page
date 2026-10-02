@@ -5,7 +5,7 @@ import {fileURLToPath} from 'node:url';
 import path from 'node:path';
 import {emptyState,emptyRecord,validateState,mergeStates,grade,evidenceReady} from '../state.js';
 import {makeSubmission} from '../submission.js';
-import {differentialDrive} from '../simulation.js';
+import {differentialDrive,playbackPose} from '../simulation.js';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 process.chdir(root);
 const read=async p=>JSON.parse(await readFile(p,'utf8'));
@@ -44,8 +44,16 @@ const archived=structuredClone(state);archived.lessons['retired-course']=emptyRe
 const current=published.find(l=>l.id===curriculum.currentLessonId);assert.equal(evidenceReady(current,r),false);const checked=emptyRecord();checked.read=true;checked.answers=current.quiz.map(q=>q.answer);checked.attempts=[{at:1,answers:checked.answers}];checked.checks=current.experiment.rubric.map(()=>true);for(const k of Object.keys(checked.report))checked.report[k]='A sufficiently complete draft answer';assert.equal(evidenceReady(current,checked),true);
 const short=makeSubmission(current,emptyRecord(),curriculum.revision);assert.ok(short.url.startsWith('https://github.com/Alisahhh/learning-page/issues/new?'));assert.ok(short.body.includes('lesson=sim-first'));const longRec=emptyRecord();longRec.note='这是很长的实验报告'.repeat(2000);const long=makeSubmission(current,longRec,curriculum.revision);assert.equal(long.needsPaste,true);assert.ok(long.body.includes(longRec.note),'Never silently truncate evidence');assert.ok(!new URL(long.url).searchParams.has('body'));
 const straight=differentialDrive({left:2,right:2});assert.ok(Math.abs(straight.final.x-1.2)<1e-10);assert.ok(Math.abs(straight.final.y)<1e-10);const spin=differentialDrive({left:-2,right:2});assert.equal(spin.final.x,0);assert.equal(spin.final.y,0);assert.ok(Math.abs(spin.final.theta-4.8)<1e-10);assert.ok(differentialDrive({left:2,right:4,dt:.5}).error>differentialDrive({left:2,right:4,dt:.02}).error);
+// Playback interpolation must not change the Euler experiment or its stored result.
+const coarse=differentialDrive({left:2,right:4,dt:.5}),snapshot=JSON.stringify(coarse),mid=playbackPose(coarse,.25);
+assert.ok(Math.abs(mid.x-.075)<1e-12);assert.equal(mid.y,0);assert.ok(Math.abs(mid.theta-.1)<1e-12);
+for(const t of [0,.1,.49,.5,1.37,6,9]){const pose=playbackPose(coarse,t);assert.ok(Number.isFinite(pose.x)&&Number.isFinite(pose.y));}
+const ending=playbackPose(coarse,6);assert.deepEqual({x:ending.x,y:ending.y,theta:ending.theta},coarse.final);
+assert.equal(JSON.stringify(coarse),snapshot,'Rendering must never mutate simulation samples');
+const partial=differentialDrive({left:2,right:4,dt:.5,duration:.7});assert.deepEqual(playbackPose(partial,2),{index:2,t:.7,...partial.final});
 for(const name of ['qa.js','qa-context.js','backend/worker.js','bootstrap.js','app.js','content.js','state.js','simulation.js','submission.js','scripts/serve.mjs','scripts/build.mjs','scripts/read-submissions.mjs'])execFileSync(process.execPath,['--check',name],{stdio:'pipe'});
 for(const name of ['index.html','style.css','favicon.svg','AGENTS.md','PLAN.md','STATUS.md','MAINTENANCE.md','REVIEW_WORKFLOW.md'])await access(name);
 console.log(`PASS: ${published.length} published lesson(s), ${lessonIds.size} roadmap topics, ${sourceIds.size} sources; content/schema, grading, record round trips/merging, submission fallback and simulation invariants.`);
 
 execFileSync(process.execPath,['scripts/check-qa.mjs'],{stdio:'inherit'});
+execFileSync(process.execPath,['scripts/check-playback.mjs'],{stdio:'inherit'});

@@ -11,7 +11,7 @@
 - 线上保护验证：缺少访问码返回 401，错误来源返回 403 且无允许来源头，合法预检返回 204，正确来源 CORS 与 Authorization 支持正常。没有关闭鉴权或限速。
 - 两个 Secret 已存在，值不进仓库。访问码仍在用户本机 outputs/问答访问码.txt，权限仅当前用户；不再要求用户配置 Cloudflare 或重置访问码。
 - qa-config.json 更新 verificationStatus=verified。网页浏览器自动化本轮连接超时，尚未通过实际按钮完成 UI 端到端验收；服务端真实调用与安全检查已经通过。学习记录结构未改。
-- 本轮发布状态待下方记录。若用户遇到问题，优先核查其浏览器网络与输入的访问码；不要再标记为 API 尚未验证。
+- 本轮 8d09612 已发布成功：https://github.com/Alisahhh/learning-page/actions/runs/37024515691 ，线上 qa-config.json 已核实 verificationStatus=verified。若用户遇到问题，优先核查其浏览器网络与输入的访问码；不要再标记为 API 尚未验证。
 
 ### 此前部署记录
 
